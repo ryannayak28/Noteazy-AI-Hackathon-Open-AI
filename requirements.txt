@@ -1,5 +1,5 @@
-openai
-streamlit
-toml
-pytube
-pyttsx3
+openai==0.27.2
+streamlit==1.19.0
+toml==0.10.2
+pytube==12.1.2
+pyttsx3==2.90
