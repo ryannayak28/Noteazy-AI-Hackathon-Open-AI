@@ -3,7 +3,7 @@
 
 ## Table of Contents
 * [About the project](#about-the-project)
-* [Installation](#installation)
+* [Setting Up](#setting-up)
 * [Diagrams](#diagrams)
 * [Result and Analysis](#result-and-analysis)
 * [Technology Used](#technology-used)
@@ -14,7 +14,7 @@
 ## About the project
 
 
-## Installation
+## Setting Up
 - Step 1: run the command "pip install -r requirements"
 - Step 2: Paste your [OpenAI API key](https://platform.openai.com/account/api-keys) in a new file with the name "secrets.toml"
 - Step 3: run the command "streamlit run app.py"
