@@ -5,39 +5,80 @@ from pytube import YouTube
 import streamlit as st
 from PIL import Image
 import re
+import pyttsx3
 
 
-# Set up OpenAI API credentials
+#------------Set up OpenAI API credentials------------
 with open("secrets.toml", "r") as f:
     config = toml.load(f)
 
 openai.api_key = config["OPENAI_KEY"]
 
-
-def video_to_audio(video_URL, destination):
-  # Get the video
+#------------Model------------
+def video_to_audio(video_URL:str, destination:str)-> None:
+  '''
+  Downloads the audio of the input URL and saves it into a .mp3 audio file
+    Args:
+            video_URL(str): URL of a youtube video
+            
+            destination(str): path to temporarily store the extracted audio file
+    Returns:
+            None
+  '''   
   video = YouTube(video_URL)
+  
   # Convert video to Audio
   audio = video.streams.filter(only_audio=True).first()
-  # Save to destination
-  output = audio.download(output_path = destination)
+  output = audio.download(output_path = destination)  
   _, ext = os.path.splitext(output)
   new_file = "Target_audio" + '.mp3'
   # Change the name of the file
   os.rename(output, new_file)
 
-def audio_to_text():
+def audio_to_text()-> None:
+  '''
+  Converts Target_audio.mp3 into text using whisper-1 model
+    Args:
+            None
+            
+    Returns:
+            None
+  '''  
   audio_file= open("Target_audio.mp3", "rb")
   transcript = openai.Audio.translate("whisper-1", audio_file)
   return transcript['text']
 
-def generate_notes(text):
+def markdown_to_voice(text:str)-> str: 
   '''
-  Change Hyper parameters 
+  Converts markdown into plain text format and saves it in voice_file.mp3
+  Args:
+          text(str): text in the format of markdown
+          
+  Returns:
+          None
   '''
+  engine = pyttsx3.init()
+  output_file = "assets/audio/notes_voice_file.mp3"  
+  voices = engine.getProperty('voices')
+  engine.setProperty('voice', voices[0].id)  
+  
+  #Convert markdown to plain text
+  cleaned_text = text.replace('#', ' ').replace('-', ' ').replace('.', ' ')
+  
+  #Run the voice engine and then save it
+  engine.save_to_file(cleaned_text, output_file)
+  engine.runAndWait()
 
 
-
+def generate_notes(text:str)-> str:
+  '''
+    Generates notes from input text
+    Args:
+            text(str): Generated text from audio file
+            
+    Returns:
+            reply(str): Notes formatted in Markdown format
+  '''
   prompt = """You are a teacher helping teach students with learning disabilities such as Dyslexia and ADHD. 
               
               The answer provided should always include these 5 sections listed below and should also contain any of the OPTIONAL SECTIONS listed above if applicable: 
@@ -73,63 +114,67 @@ def generate_notes(text):
       stream=False,
       presence_penalty=0,
       frequency_penalty=0)
-  # Best is 1.3 temperature
+  
   reply = chat.choices[0].message.content
   return(reply)
 
+def display_sidebar(text:str)-> None:
+  '''
+  Display the Markdown notes in the streamlit app
+    Args:
+            text(str): text in Markdown format 
+            
+    Returns:
+            None
+  '''
+  # Use regular expressions to find level 2 headers
+  pattern = r'^##\s+.+$'
+  headers = re.findall(pattern, text, re.MULTILINE)
 
-def display_sidebar(text):
-    # Use regular expressions to find level 2 headers
-    pattern = r'^##\s+.+$'
-    headers = re.findall(pattern, text, re.MULTILINE)
+  # Add the headers to the sidebar
+  st.sidebar.markdown('## Table of Contents')
+  for header in headers:
+      text_without_hashes = header.replace('##', '').strip()
+      st.sidebar.markdown(f'- [{text_without_hashes}](#{text_without_hashes.lower().replace(" ", "-")})')
 
-    # Add the headers to the sidebar
-    st.sidebar.markdown('## Table of Contents')
-    for header in headers:
-        text_without_hashes = header.replace('##', '').strip()
-        st.sidebar.markdown(f'- [{text_without_hashes}](#{text_without_hashes.lower().replace(" ", "-")})')
-
-    # Display the full text with headers
-    st.markdown(text, unsafe_allow_html=True)
+  # Display the full text with headers
+  st.markdown(text, unsafe_allow_html=True)
 
 
-# Define the Streamlit app
+#------------Streamlit app------------
 def app():
-    # Set the page title
-    st.set_page_config(page_title="Feynman.AI")
+  
+  st.set_page_config(page_title="Feynman.AI")  
+  st.title("Feynman.AI 📑")
+ 
+  with st.sidebar:   
+    # Add the logo image to the sidebar
+    image = Image.open("assets/images/feynmanai-no-bg.png")
+    st.image(image)
+    
+    # Add the header to the sidebar
+    st.header("Understanding complex topics made simple!")
+    st.write("_For students with special needs._")
+    
+  # Get user input
+  video_URL = st.text_input("Paste the video URL here.")
 
-    # Set the app header
-    st.title("Feynman.AI 📑")
-
-    # Set the app sidebar
-    with st.sidebar:   
-      # Add the logo image to the sidebar
-      image = Image.open("C:\\Users\\nayak\\OneDrive\\Desktop\\Hackathon-Project\\assets\\images\\feynmanai-no-bg.png")
-      st.image(image)
-      # Add the header to the sidebar
-      st.header("Understanding complex topics made simple!")
-      st.write("_For students with special needs._")
-
-    # Set the music
-    st.write("Music to help you concentrate better")
-    st.audio('C:\\Users\\nayak\\OneDrive\\Desktop\\Hackathon-Project\\assets\\audio\\song.mp3')
-
-    # Get user input
-    video_URL = st.text_input("Paste the video URL here.")
-
-    # Generate the response
-    if st.button("Generate Notes"):
-        if video_URL:
-            with st.spinner('Simplifying the content 📖....'):
-              destination = "."
-              video_to_audio(video_URL, destination)
-              text = audio_to_text()
-              os.remove('Target_audio.mp3')
-              output = generate_notes(text)
-            st.video(video_URL)
-            display_sidebar(output)
-        else:
-            st.warning("Please enter some text to summarize.")
+  # Generate Notes
+  if st.button("Generate Notes"):
+      if video_URL:
+          with st.spinner('Simplifying the content 📖....'):
+            destination = "."
+            video_to_audio(video_URL, destination)
+            text = audio_to_text()
+            os.remove('Target_audio.mp3')
+            output = generate_notes(text)
+          st.video(video_URL)
+          st.write("Listen to the notes in voice")
+          markdown_to_voice(output)
+          st.audio('assets/audio/notes_voice_file.mp3')
+          display_sidebar(output)
+      else:
+          st.warning("Please enter some text to summarize.")
 
 # Run the Streamlit app
 if __name__ == '__main__':
