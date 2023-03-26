@@ -93,7 +93,6 @@ def generate_notes(text:str)-> str:
                     - Code: containing any snippets of code mentioned in the text,
                     - Trivia: include an any important dates or information about important entities such persons, organizations, etc mentioned in text,
                     - Jargons: provide short explanations for any jargons present in the text,
-                     
 
               The answer generated must always be appropiately formatted using the Markdown with each section being a subheading.              
               The language used to answer should be simple, compassionate and easily visualizable.
