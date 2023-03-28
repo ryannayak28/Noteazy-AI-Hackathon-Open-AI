@@ -20,7 +20,7 @@
 - Step 3: run the command "streamlit run app.py"
 
 ## Diagrams
-### **FlowChart**
+- ### **FlowChart**
 ![Flowchart](https://user-images.githubusercontent.com/59303406/228313163-cbc65662-4600-43b2-b817-7026e11a749a.png)
 
 
