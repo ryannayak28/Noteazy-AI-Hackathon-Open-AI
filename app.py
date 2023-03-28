@@ -57,7 +57,10 @@ def markdown_to_voice(text:str)-> str:
   Returns:
           None
   '''
-  engine = pyttsx3.init()
+  try:
+    engine = pyttsx3.init()
+  except Exception:
+    pass
   output_file = "assets/audio/notes_voice_file.mp3"  
   voices = engine.getProperty('voices')
   engine.setProperty('voice', voices[0].id)  
