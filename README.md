@@ -21,7 +21,7 @@
 
 ## Diagrams
 ### **FlowChart**
-![Architecture](https://user-images.githubusercontent.com/22417910/197022224-6a20b8cb-b83a-4eb0-befa-7d310824a451.png)
+![Flowchart](https://user-images.githubusercontent.com/59303406/228313163-cbc65662-4600-43b2-b817-7026e11a749a.png)
 
 
 ## Result and Analysis
