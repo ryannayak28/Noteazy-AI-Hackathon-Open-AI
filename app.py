@@ -62,7 +62,7 @@ def markdown_to_voice(text:str)-> str:
   #Convert markdown to plain text
   cleaned_text = text.replace('#', ' ').replace('-', ' ').replace('.', ' ')
 
-  speech = gTTS(text = text)
+  speech = gTTS(text = cleaned_text)
   speech.save(output_file)
   
 
