@@ -9,10 +9,10 @@ from gtts import gTTS
 
 
 ------------Set up OpenAI API credentials------------
-with open("/secrets/secrets.toml", "r") as f:
-    config = toml.load(f)
+# with open("/secrets/secrets.toml", "r") as f:
+#     config = toml.load(f)
 
-openai.api_key = config["OPENAI_KEY"]
+openai.api_key = st.secrets["OPENAI_KEY"]
 
 #------------Model------------
 def video_to_audio(video_URL:str, destination:str)-> None:
