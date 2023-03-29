@@ -78,7 +78,7 @@ def generate_notes(text:str)-> str:
   '''
   prompt = """You are a teacher helping teach students with learning disabilities such as Dyslexia and ADHD. 
               
-              The answer provided should always include these 5 sections listed below and should also contain any of the OPTIONAL SECTIONS listed above if applicable: 
+              The answer provided should always include these 5 sections listed below and should also contain any of the OPTIONAL SECTIONS listed below if applicable: 
                     1) Title: containing an apt title for the text,
                     2) Summary: a brief summary containing a creative, meaningful and intuitive explanation of the text, 
                     3) Key Takeaways: containing important points to remember from the text,
