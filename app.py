@@ -48,7 +48,7 @@ def audio_to_text()-> None:
   transcript = openai.Audio.translate("whisper-1", audio_file)
   return transcript['text']
 
-def markdown_to_voice(text:str)-> str: 
+def markdown_to_voice(text:str)-> None: 
   '''
   Converts markdown into plain text format and saves it in voice_file.mp3
   Args:
