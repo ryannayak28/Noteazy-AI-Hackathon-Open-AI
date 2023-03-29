@@ -25,7 +25,10 @@ Feynman.AI makes online learning through educational videos more effective for i
 
 
 ## Result and Analysis
-
+![intro_page](https://user-images.githubusercontent.com/59303406/228673401-fab1e61e-d711-45b3-b60a-b1baf5ceaece.png)
+![start](https://user-images.githubusercontent.com/59303406/228673409-9534d165-7b80-4d51-b82e-e7874dddb33f.png)
+![audio_page](https://user-images.githubusercontent.com/59303406/228673410-dd8b4430-40f1-4c26-98ca-462f4084004b.png)
+![end](https://user-images.githubusercontent.com/59303406/228673413-900e0023-325f-45ef-a962-86e46c96f3cd.png)
 ## Technology Used
 - [Whisper API](https://openai.com/research/whisper)
 - [ChatGPT](https://openai.com/product/gpt-4)
