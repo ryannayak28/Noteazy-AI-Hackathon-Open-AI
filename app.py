@@ -8,7 +8,7 @@ import re
 from gtts import gTTS
 
 
-------------Set up OpenAI API credentials------------
+#------------Set up OpenAI API credentials------------
 # with open("/secrets/secrets.toml", "r") as f:
 #     config = toml.load(f)
 
