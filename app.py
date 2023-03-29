@@ -57,7 +57,7 @@ def markdown_to_voice(text:str)-> str:
   Returns:
           None
   '''
-  output_file = "/assets/audio/notes_voice.mp3"
+  output_file = "notes_voice.mp3"
   
   #Convert markdown to plain text
   cleaned_text = text.replace('#', ' ').replace('-', ' ').replace('.', ' ')
@@ -166,7 +166,7 @@ def app():
           st.video(video_URL)
           st.write("Listen to the notes in voice")
           markdown_to_voice(output)
-          st.audio('/assets/audio/notes_voice.mp3')
+          st.audio('notes_voice.mp3')
           display_sidebar(output)
       else:
           st.warning("Please enter some text to summarize.")
