@@ -5,14 +5,14 @@ from pytube import YouTube
 import streamlit as st
 from PIL import Image
 import re
-import pyttsx3
+from gtts import gTTS
 
 
 #------------Set up OpenAI API credentials------------
-with open("secrets.toml", "r") as f:
-    config = toml.load(f)
+# with open("/secrets/secrets.toml", "r") as f:
+#     config = toml.load(f)
 
-openai.api_key = config["OPENAI_KEY"]
+openai.api_key = st.secrets["OPENAI_KEY"]
 
 #------------Model------------
 def video_to_audio(video_URL:str, destination:str)-> None:
@@ -57,17 +57,14 @@ def markdown_to_voice(text:str)-> str:
   Returns:
           None
   '''
-  engine = pyttsx3.init()
-  output_file = "assets/audio/notes_voice_file.mp3"  
-  voices = engine.getProperty('voices')
-  engine.setProperty('voice', voices[0].id)  
+  output_file = "notes_voice.mp3"
   
   #Convert markdown to plain text
   cleaned_text = text.replace('#', ' ').replace('-', ' ').replace('.', ' ')
+
+  speech = gTTS(text = cleaned_text)
+  speech.save(output_file)
   
-  #Run the voice engine and then save it
-  engine.save_to_file(cleaned_text, output_file)
-  engine.runAndWait()
 
 
 def generate_notes(text:str)-> str:
@@ -169,7 +166,7 @@ def app():
           st.video(video_URL)
           st.write("Listen to the notes in voice")
           markdown_to_voice(output)
-          st.audio('assets/audio/notes_voice_file.mp3')
+          st.audio('notes_voice.mp3')
           display_sidebar(output)
       else:
           st.warning("Please enter some text to summarize.")
