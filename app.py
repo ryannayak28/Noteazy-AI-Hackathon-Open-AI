@@ -139,12 +139,12 @@ def display_sidebar(text:str)-> None:
 #------------Streamlit app------------
 def app():
   
-  st.set_page_config(page_title="Feynman.AI")  
-  st.title("Feynman.AI 📑")
+  st.set_page_config(page_title="Noteazy.AI")  
+  st.title("Noteezy.AI 📑")
  
   with st.sidebar:   
     # Add the logo image to the sidebar
-    image = Image.open("assets/images/feynmanai-no-bg.png")
+    image = Image.open("assets/images/Noteazyai-no-bg.png")
     st.image(image)
     
     # Add the header to the sidebar
